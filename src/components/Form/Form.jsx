@@ -8,22 +8,37 @@ class Form extends React.Component {
     super(props);
     this.state = {
       value: undefined,
-      sale: null
+      sale: null,
+      inputValue: ''
     }
-
-    this.handleChange = this.handleChange.bind(this);
   }
 
-
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({ value: event.target.value });
   }
 
-  checkPromo() {
+  checkPromo(arg) {
+    const requestURL = 'settings.json';
+    const request = new XMLHttpRequest();
+    request.open('GET', requestURL);
+    request.responseType = 'json';
+    request.send();
+    request.onload = function () {
 
-    let getSale = 20
+      const myJson = request.response;
+      const parseJsonCode = myJson.map(item => item.promoCodes);
+      const hasCodes = parseJsonCode[0].map(item => item);
 
-    this.setState({ sale: getSale });
+      console.log(hasCodes)
+      if (arg === hasCodes) {
+        console.log('TRUE')
+        // this.setState({ sale: 10 });
+      } else {
+        console.log('FALSE')
+      }
+    }
+
+
   }
 
   render() {
@@ -61,8 +76,15 @@ class Form extends React.Component {
                   <option defaultValue="Картой курьеру">Картой курьеру</option>
                 </select>
               </div>
-              <input type="text" name="promo" placeholder="Промокод" id="cart-promo" defaultValue="" />
-              <a className="check-code" onClick={this.checkPromo}>Check</a>
+              <input
+                type="text" name="promo"
+                placeholder="Промокод"
+                id="cart-promo"
+                value={this.state.inputValue}
+                onChange={evt => this.updateInputValue(evt)}
+              />
+              <a className="check-code"
+                onClick={this.checkPromo.bind(this, this.state.inputValue)}>Check</a>
             </div>
             <input type="text" name="price" defaultValue={getPercent} id="cart-price" />
             <button className="cart__order-button">Заказать</button>
@@ -78,6 +100,12 @@ class Form extends React.Component {
         </div>
       </div>
     );
+  }
+
+  updateInputValue(evt) {
+    this.setState({
+      inputValue: evt.target.value
+    });
   }
 }
 
