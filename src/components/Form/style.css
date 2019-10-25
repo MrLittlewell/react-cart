@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+ }
+ .form-area {
+  width: 60%;
+  padding: 0 50px 0 0;
+ }
+ .info-area {
+  width: 100%
+ }
+ .programm-cart {
+  display: flex;
+ }
+ 
+ #cart-price {
+  position: absolute;
+  visibility: hidden;
+ }
+ .form-group input {
+  width: 100%;
+  margin: 10px 0;
+  height: 45px;
+ }
+ .form-group input:nth-child(1) {
+   margin-right: 10px;
+ }
+ .form-group select {
+  margin: 10px 0;
+  height: 45px;
+ }
+ .double {
+  display: flex;
+ }
+
+ .check-code {
+   margin: 10px 0;
+ }
+ input{
+   padding: 0 0 0 20px;
+ }
+.cart-container {
+  padding: 0 50px;
+}
