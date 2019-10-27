@@ -1,5 +1,8 @@
 import React from 'react';
-
+import DatePicker from "react-datepicker";
+import { subDays } from 'date-fns';
+ 
+import "react-datepicker/dist/react-datepicker.css";
 import "./style.css"
 import food from "../../images/cart.png"
 
@@ -9,15 +12,24 @@ class Form extends React.Component {
     this.state = {
       value: undefined,
       sale: null,
-      inputValue: ''
+      inputValue: '',
+      startDate: new Date(),
+      setStartDate: new Date()
     }
   }
+
+  handleDateChange = date => {
+    this.setState({
+      startDate: date
+    });
+  };
 
   handleChange = (event) => {
     this.setState({ value: event.target.value });
   }
 
   checkPromo(arg) {
+    const setConst = this
     const requestURL = 'settings.json';
     const request = new XMLHttpRequest();
     request.open('GET', requestURL);
@@ -28,14 +40,22 @@ class Form extends React.Component {
       const myJson = request.response;
       const parseJsonCode = myJson.map(item => item.promoCodes);
       const hasCodes = parseJsonCode[0].map(item => item);
+      
+      hasCodes.forEach(element => {
+        if (arg === element.name) {
+         
+          setConst.setState({ sale: element.value });
+          return 
+        } else {
+          console.log('FALSE')
+        }
+      });
 
-      console.log(hasCodes)
-      if (arg === hasCodes) {
-        console.log('TRUE')
-        // this.setState({ sale: 10 });
-      } else {
-        console.log('FALSE')
-      }
+
+      console.log(parseJsonCode, 'parseJsonCode')
+      console.log(hasCodes, 'hasCodes')
+
+      
     }
 
 
@@ -52,7 +72,7 @@ class Form extends React.Component {
     let haveSale = this.state.sale
     let getPercent = price - (price * haveSale / 100)
     console.log(getPercent)
-
+    const {startDate, setStartDate} = this.state;
     return (
       <div className="cart-container">
         <h2 className="cart-title">{programName}</h2>
@@ -76,6 +96,12 @@ class Form extends React.Component {
                   <option defaultValue="Картой курьеру">Картой курьеру</option>
                 </select>
               </div>
+              <DatePicker
+                name="date"
+                selected={subDays(new Date(), -2)}
+                onChange={date => this.handleDateChange(date)}
+                minDate={subDays(new Date(), -2)}
+              />
               <input
                 type="text" name="promo"
                 placeholder="Промокод"
@@ -83,6 +109,7 @@ class Form extends React.Component {
                 value={this.state.inputValue}
                 onChange={evt => this.updateInputValue(evt)}
               />
+              
               <a className="check-code"
                 onClick={this.checkPromo.bind(this, this.state.inputValue)}>Check</a>
             </div>
