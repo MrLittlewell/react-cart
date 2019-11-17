@@ -1,7 +1,9 @@
 import React from 'react';
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
+import ru from "date-fns/locale/ru";
 import { subDays } from 'date-fns';
- 
+registerLocale("ru", ru);
+
 import "react-datepicker/dist/react-datepicker.css";
 import "./style.css"
 import food from "../../images/cart.png"
@@ -13,7 +15,7 @@ class Form extends React.Component {
       value: undefined,
       sale: null,
       inputValue: '',
-      startDate: new Date(),
+      startDate: subDays(new Date(), -2),
       setStartDate: new Date(),
       showPromoInfo: false,
       showPromo: false,
@@ -65,11 +67,14 @@ class Form extends React.Component {
     let localData = localStorage.getItem('localPrice');
     let unParse = JSON.parse(localData)
 
+    let getDay = unParse !== null ? unParse.day : ''
+    let integetDay = parseInt(getDay.match(/\d+/));
     let price = unParse !== null ? unParse.price : 0
-    let programName = unParse !== null ? unParse.planName : 'Программа не выбрана'
+    let programName = unParse !== null ? unParse.planName + ` | ${getDay}` : 'Программа не выбрана'
 
     let haveSale = sale
     let getPercent = price - (price * haveSale / 100)
+    
     return (
       <div className="cart-container">
         <h2 className="cart-title">{programName}</h2>
@@ -85,27 +90,30 @@ class Form extends React.Component {
             </div>
             <div className="form-group">
               <input type="text" name="address" placeholder="Адрес" id="cart-address" defaultValue="" required />
+              <input type="text" name="comment" placeholder="Комментарий ... " id="comment" defaultValue="" required />
             </div>
             <div className="form-group double">
             <DatePicker
                 name="date"
-                selected={subDays(new Date(), -2)}
+                selected={this.state.startDate}
                 onChange={date => this.handleDateChange(date)}
                 minDate={subDays(new Date(), -2)}
+                locale="ru"
               />
                <div className="input-field second-select">
                 <select name="delivery" className="browser-default" required onChange={this.handleChange}>
-                  <option defaultValue="6:00-7:00">Утреняя доставка 6:00-7:00</option>
-                  <option defaultValue="7:00-8:00">Утреняя доставка 7:00-8:00</option>
-                  <option defaultValue="8:00-9:00">Утреняя доставка 8:00-9:00</option>
-                  <option defaultValue="9:00-10:00">Утреняя доставка 9:00-10:00</option>
-                  <option defaultValue="Вечерняя доставка" disabled>Вечерняя доставка</option>
+                  <option value="#" disabled selected hidden>Время доставки:</option>
+                  <option defaultValue="6:00-7:00">6:00-7:00</option>
+                  <option defaultValue="7:00-8:00">7:00-8:00</option>
+                  <option defaultValue="8:00-9:00">8:00-9:00</option>
+                  <option defaultValue="9:00-10:00">9:00-10:00</option>
                 </select>
               </div>
             </div>
             <div className="form-group double">
               <div className="input-field">
                 <select name="type" className="browser-default" required onChange={this.handleChange}>
+                  <option value="#" disabled selected hidden>Тип оплаты:</option>
                   <option defaultValue="Наличными курьеру">Наличными курьеру</option>
                   <option defaultValue="Картой курьеру">Картой курьеру</option>
                 </select>
@@ -122,13 +130,16 @@ class Form extends React.Component {
                 onClick={this.checkPromo.bind(this, inputValue)}>&#10003;</a>
             </div>
             <input type="text" name="price" defaultValue={getPercent} id="cart-price" />
+            <input type="text" name="day" defaultValue={getDay} id="day-plan" />
             <button type="submit" className="cart__order-button" disabled={ price === 0 ? true : false}>Заказать</button>
           </form></div>
           <div className="order-info-area">
             <div className="info-area z-depth-4">
             <h3 className="summary-title">Сумма заказа</h3>
-              <p>Всего</p>
+              <p>Всего:</p>
               <p><span>{getPercent}</span> BYN</p>
+              <p>В день:</p>
+              {getPercent === 0 ? 0 + ' BYN' : <p><span>{getPercent / integetDay}</span> BYN</p>}
               {showPromoInfo ? (
                 showPromo ?
                 <p className="promo-true">Приминён промокод на {sale}%!</p>: 

@@ -12,7 +12,8 @@
   display: flex;
  }
  
- #cart-price {
+ #cart-price,
+ #day-plan {
   position: absolute;
   visibility: hidden;
  }
