@@ -10,12 +10,14 @@ import food from "../../images/cart.png"
 
 class Form extends React.Component {
   constructor(props) {
+    let currentDay = new Date();
+    let currentHour = currentDay.getHours();
     super(props);
     this.state = {
       value: undefined,
       sale: null,
       inputValue: '',
-      startDate: subDays(new Date(), -2),
+      startDate: currentHour < 12 ? subDays(new Date(), -1) : subDays(new Date(), -2),
       setStartDate: new Date(),
       showPromoInfo: false,
       showPromo: false,
@@ -73,7 +75,7 @@ class Form extends React.Component {
     let programName = unParse !== null ? unParse.planName + ` | ${getDay}` : 'Программа не выбрана'
 
     let haveSale = sale
-    let getPercent = price - (price * haveSale / 100)
+    let getPercent = price - (price * haveSale / 100);
     
     return (
       <div className="cart-container">
