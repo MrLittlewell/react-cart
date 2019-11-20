@@ -17,8 +17,8 @@ class Form extends React.Component {
       value: undefined,
       sale: null,
       inputValue: '',
-      startDate: currentHour < 12 ? subDays(new Date(), -1) : subDays(new Date(), -2),
-      setStartDate: new Date(),
+      startDate: null,
+      setStartDate: currentHour < 12 ? subDays(new Date(), -1) : subDays(new Date(), -2),
       showPromoInfo: false,
       showPromo: false,
     }
@@ -29,7 +29,7 @@ class Form extends React.Component {
       startDate: date
     });
   };
- 
+
   handleChange = (event) => {
     this.setState({ value: event.target.value });
   }
@@ -46,7 +46,7 @@ class Form extends React.Component {
       const myJson = request.response;
       const parseJsonCode = myJson.map(item => item.promoCodes);
       const hasCodes = parseJsonCode[0].map(item => item);
-       
+
       for (let element of hasCodes) {
         if (arg === element.name) {
           setConst.setState({
@@ -56,11 +56,12 @@ class Form extends React.Component {
           });
           break;
         } else {
-          setConst.setState({ 
+          setConst.setState({
             showPromoInfo: true,
-            showPromo: false});
+            showPromo: false
+          });
         }
-      } 
+      }
     }
   }
 
@@ -76,7 +77,7 @@ class Form extends React.Component {
 
     let haveSale = sale
     let getPercent = price - (price * haveSale / 100);
-    
+
     return (
       <div className="cart-container">
         <h2 className="cart-title">{programName}</h2>
@@ -92,17 +93,29 @@ class Form extends React.Component {
             </div>
             <div className="form-group">
               <input type="text" name="address" placeholder="Адрес" id="cart-address" defaultValue="" required />
-              <input type="text" name="comment" placeholder="Комментарий ... " id="comment" defaultValue="" required />
+              <input type="text" name="comment" placeholder="Комментарий к доставке... " id="comment" defaultValue="" required />
             </div>
             <div className="form-group double">
-            <DatePicker
-                name="date"
-                selected={this.state.startDate}
-                onChange={date => this.handleDateChange(date)}
-                minDate={subDays(new Date(), -2)}
-                locale="ru"
-              />
-               <div className="input-field second-select">
+              {window.innerWidth >= 960 ?
+                <DatePicker
+                  name="date"
+                  selected={this.state.startDate}
+                  onChange={date => this.handleDateChange(date)}
+                  minDate={this.state.setStartDate}
+                  locale="ru"
+                  placeholderText="Выбрать дату доставки"
+                /> :
+                <DatePicker
+                  name="date"
+                  selected={this.state.startDate}
+                  onChange={date => this.handleDateChange(date)}
+                  minDate={this.state.setStartDate}
+                  locale="ru"
+                  withPortal
+                  placeholderText="Выбрать дату доставки"
+                />
+              }
+              <div className="input-field second-select">
                 <select name="delivery" className="browser-default" required onChange={this.handleChange}>
                   <option value="#" disabled selected hidden>Время доставки:</option>
                   <option defaultValue="6:00-7:00">6:00-7:00</option>
@@ -119,7 +132,7 @@ class Form extends React.Component {
                   <option defaultValue="Наличными курьеру">Наличными курьеру</option>
                   <option defaultValue="Картой курьеру">Картой курьеру</option>
                 </select>
-              </div>        
+              </div>
               <input
                 type="text" name="promo"
                 placeholder="Промокод"
@@ -127,25 +140,25 @@ class Form extends React.Component {
                 value={inputValue}
                 onChange={evt => this.updateInputValue(evt)}
               />
-              
+
               <a className="check-code"
                 onClick={this.checkPromo.bind(this, inputValue)}>&#10003;</a>
             </div>
             <input type="text" name="price" defaultValue={getPercent} id="cart-price" />
             <input type="text" name="day" defaultValue={getDay} id="day-plan" />
-            <button type="submit" className="cart__order-button" disabled={ price === 0 ? true : false}>Заказать</button>
+            <button type="submit" className="cart__order-button" disabled={price === 0 ? true : false}>Заказать</button>
           </form></div>
           <div className="order-info-area">
             <div className="info-area z-depth-4">
-            <h3 className="summary-title">Сумма заказа</h3>
+              <h3 className="summary-title">Сумма заказа</h3>
               <p>Всего:</p>
               <p><span>{getPercent}</span> BYN</p>
               <p>В день:</p>
               {getPercent === 0 ? 0 + ' BYN' : <p><span>{getPercent / integetDay}</span> BYN</p>}
               {showPromoInfo ? (
                 showPromo ?
-                <p className="promo-true">Приминён промокод на {sale}%!</p>: 
-                <p className="promo-false">Неверный промокод</p>
+                  <p className="promo-true">Приминён промокод на {sale}%!</p> :
+                  <p className="promo-false">Неверный промокод</p>
               ) : null}
             </div>
             <img src={food} alt="cart" />
