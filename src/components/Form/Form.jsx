@@ -104,7 +104,7 @@ class Form extends React.Component {
                   minDate={this.state.setStartDate}
                   locale="ru"
                   placeholderText="Выбрать дату доставки"
-                  dateFormat="d/MMMM/yyyy"
+                  dateFormat="d MMMM yyyy"
                 /> :
                 <DatePicker
                   name="date"
@@ -114,7 +114,7 @@ class Form extends React.Component {
                   locale="ru"
                   withPortal
                   placeholderText="Выбрать дату доставки"
-                  dateFormat="d/MMMM/yyyy"
+                  dateFormat="d MMMM yyyy"
                 />
               }
               <div className="input-field second-select">
@@ -158,7 +158,7 @@ class Form extends React.Component {
               <p>Всего:</p>
               <p><span>{getPercent}</span> BYN</p>
               <p>В день:</p>
-              {getPercent === 0 ? 0 + ' BYN' : <p><span>{getPercent / integetDay}</span> BYN</p>}
+              <p><span>{getPercent === 0 ? 0 : (getPercent / integetDay).toFixed(2)}</span> BYN</p>
               {showPromoInfo ? (
                 showPromo ?
                   <p className="promo-true">Приминён промокод на {sale}%!</p> :
