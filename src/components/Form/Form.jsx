@@ -93,7 +93,7 @@ class Form extends React.Component {
             </div>
             <div className="form-group">
               <input type="text" name="address" placeholder="Адрес" id="cart-address" defaultValue="" required />
-              <input type="text" name="comment" placeholder="Комментарий к доставке... " id="comment" defaultValue="" required />
+              <input type="text" name="comment" placeholder="Комментарий к доставке... " id="comment" defaultValue="" />
             </div>
             <div className="form-group double">
               {window.innerWidth >= 960 ?
@@ -105,6 +105,7 @@ class Form extends React.Component {
                   locale="ru"
                   placeholderText="Выбрать дату доставки"
                   dateFormat="d MMMM yyyy"
+                  required
                 /> :
                 <DatePicker
                   name="date"
@@ -115,28 +116,9 @@ class Form extends React.Component {
                   withPortal
                   placeholderText="Выбрать дату доставки"
                   dateFormat="d MMMM yyyy"
+                  required
                 />
               }
-              <div className="input-field second-select">
-                <select name="delivery" className="browser-default" required onChange={this.handleChange}>
-                  <option value="#" disabled selected hidden>Время доставки:</option>
-                  <option defaultValue="6:00-7:00">6:00-7:00</option>
-                  <option defaultValue="7:00-8:00">7:00-8:00</option>
-                  <option defaultValue="8:00-9:00">8:00-9:00</option>
-                  <option defaultValue="9:00-10:00">9:00-10:00</option>
-                  <option defaultValue="10:00-11:00">10:00-11:00</option>
-                  <option defaultValue="11:00-12:00">11:00-12:00</option>
-                </select>
-              </div>
-            </div>
-            <div className="form-group double">
-              <div className="input-field">
-                <select name="type" className="browser-default" required onChange={this.handleChange}>
-                  <option value="#" disabled selected hidden>Тип оплаты:</option>
-                  <option defaultValue="Наличными курьеру">Наличными курьеру</option>
-                  <option defaultValue="Картой курьеру">Картой курьеру</option>
-                </select>
-              </div>
               <input
                 type="text" name="promo"
                 placeholder="Промокод"
@@ -147,6 +129,27 @@ class Form extends React.Component {
 
               <a className="check-code"
                 onClick={this.checkPromo.bind(this, inputValue)}>&#10003;</a>
+            </div>
+            <div className="form-group double">
+              <div className="input-field">
+                <select name="type" className="browser-default" required onChange={this.handleChange}>
+                  <option disabled selected hidden>Тип оплаты:</option>
+                  <option defaultValue="Наличными курьеру">Наличными курьеру</option>
+                  <option defaultValue="Картой курьеру">Картой курьеру</option>
+                </select>
+              </div>
+              <div className="input-field second-select">
+                <select name="delivery" className="browser-default" required onChange={this.handleChange}>
+                  <option disabled selected hidden>Время доставки:</option>
+                  <option defaultValue="6:00-7:00">6:00-7:00</option>
+                  <option defaultValue="7:00-8:00">7:00-8:00</option>
+                  <option defaultValue="8:00-9:00">8:00-9:00</option>
+                  <option defaultValue="9:00-10:00">9:00-10:00</option>
+                  <option defaultValue="10:00-11:00">10:00-11:00</option>
+                  <option defaultValue="11:00-12:00">11:00-12:00</option>
+                </select>
+              </div>
+
             </div>
             <input type="text" name="price" defaultValue={getPercent} id="cart-price" />
             <input type="text" name="day" defaultValue={getDay} id="day-plan" />
