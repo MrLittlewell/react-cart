@@ -132,15 +132,15 @@ class Form extends React.Component {
             </div>
             <div className="form-group double">
               <div className="input-field">
-                <select name="type" className="browser-default" required onChange={this.handleChange}>
-                  <option disabled selected hidden>Тип оплаты:</option>
+                <select name="type" className="browser-default" onChange={this.handleChange} required>
+                  <option value="" disabled selected hidden>Тип оплаты:</option>
                   <option defaultValue="Наличными курьеру">Наличными курьеру</option>
                   <option defaultValue="Картой курьеру">Картой курьеру</option>
                 </select>
               </div>
               <div className="input-field second-select">
-                <select name="delivery" className="browser-default" required onChange={this.handleChange}>
-                  <option disabled selected hidden>Время доставки:</option>
+                <select name="delivery" className="browser-default" onChange={this.handleChange} required>
+                  <option value="" disabled selected hidden>Время доставки:</option>
                   <option defaultValue="6:00-7:00">6:00-7:00</option>
                   <option defaultValue="7:00-8:00">7:00-8:00</option>
                   <option defaultValue="8:00-9:00">8:00-9:00</option>
