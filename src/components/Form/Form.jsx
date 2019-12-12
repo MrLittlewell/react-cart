@@ -81,11 +81,11 @@ class Form extends React.Component {
     return (
       <div className="cart-container">
         <h2 className="cart-title">{programName}</h2>
-        <a className="cart-to-menu" href="./menu.html">Выбор меню</a>
+        <a className="cart-to-menu" href="/menu">Выбор меню</a>
         <div className="programm-cart">
           <div className="form-area"><form id="order-form" action="order.php" method="post">
             <div className="form-group">
-              <input type="text" name="name" placeholder="Имя" id="cart-name" defaultValue="" required />
+              <input type="text" name="name" placeholder="Ф.И.О" id="cart-name" defaultValue="" required />
             </div>
             <div className="form-group double">
               <input type="text" name="phone" placeholder="Телефон" id="cart-phone" defaultValue="" required />
@@ -152,7 +152,7 @@ class Form extends React.Component {
 
             </div>
             <input type="text" name="price" defaultValue={getPercent} id="cart-price" />
-            <input type="text" name="day" defaultValue={getDay} id="day-plan" />
+            <input type="text" name="day" defaultValue={programName} id="day-plan" />
             <button type="submit" className="cart__order-button" disabled={price === 0 ? true : false}>Заказать</button>
           </form></div>
           <div className="order-info-area">
